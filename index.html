@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="LiteCapture.png">
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiteCapture - Lightweight Screen Recorder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo-container">
+        <span class="logo">🎥</span>
+        <h1>LiteCapture</h1>
+      </div>
+      <div class="header-controls">
+        <div class="recording-info">
+          <span id="timer">00:00:00</span>
+          <span id="file-size">0 MB</span>
+        </div>
+        <label class="switch" title="Toggle dark mode">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider round"></span>
+          <span class="theme-label">Dark Mode</span>
+        </label>
+      </div>
+    </header>
+    <main>
+      <div class="card settings-card">
+        <h2>Recording Settings</h2>
+        <div class="settings-grid">
+          <div class="setting-group">
+            <h3>Video</h3>
+            <div class="setting-item">
+              <label for="captureSelect">Capture Mode:</label>
+              <select id="captureSelect" class="styled-select">
+                <option value="screen">Full Screen</option>
+                <option value="window">Application Window</option>
+                <option value="tab">Browser Tab</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label for="resolutionSelect">Resolution:</label>
+              <select id="resolutionSelect" class="styled-select">
+                <option value="auto">Auto-Detect</option>
+                <option value="480x360">360p (Ultra Light)</option>
+                <option value="640x480">480p (Light)</option>
+                <option value="1280x720" selected>720p (Balanced)</option>
+                <option value="1920x1080">1080p (High)</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label for="fpsSelect">Frame Rate:</label>
+              <select id="fpsSelect" class="styled-select">
+                <option value="10">10 fps (Ultra Light)</option>
+                <option value="15">15 fps (Light)</option>
+                <option value="24" selected>24 fps (Balanced)</option>
+                <option value="30">30 fps (Smooth)</option>
+                <option value="60">60 fps (High)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>Quality</h3>
+            <div class="setting-item">
+              <label for="bitrateSelect">Bitrate:</label>
+              <select id="bitrateSelect" class="styled-select">
+                <option value="500000">500 Kbps (Ultra Light)</option>
+                <option value="1000000">1 Mbps (Light)</option>
+                <option value="2500000" selected>2.5 Mbps (Balanced)</option>
+                <option value="5000000">5 Mbps (High)</option>
+                <option value="8000000">8 Mbps (Ultra)</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label for="codecSelect">Codec:</label>
+              <select id="codecSelect" class="styled-select">
+                <option value="vp8">VP8 (Compatible)</option>
+                <option value="vp9" selected>VP9 (Efficient)</option>
+                <option value="h264">H.264 (If available)</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label for="optimizationSelect">Optimization:</label>
+              <select id="optimizationSelect" class="styled-select">
+                <option value="performance" selected>Performance (Low CPU)</option>
+                <option value="balanced">Balanced</option>
+                <option value="quality">Quality (Higher CPU)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>Audio</h3>
+            <div class="setting-item audio-controls">
+              <div class="audio-option">
+                <input type="checkbox" id="audioSystem" class="styled-checkbox">
+                <label for="audioSystem">System Audio</label>
+              </div>
+              <div class="audio-option">
+                <input type="checkbox" id="audioMic" class="styled-checkbox" checked>
+                <label for="audioMic">Microphone</label>
+              </div>
+            </div>
+            <div class="setting-item" id="micVolumeContainer">
+              <label for="micVolume">Mic Volume:</label>
+              <input type="range" id="micVolume" min="0" max="100" value="75" class="slider-control">
+              <span id="micVolumeValue">75%</span>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>Output</h3>
+            <div class="setting-item">
+              <label for="formatSelect">Format:</label>
+              <select id="formatSelect" class="styled-select">
+                <option value="webm" selected>WebM (Smaller size)</option>
+                <option value="mp4">MP4 (More compatible)</option>
+              </select>
+            </div>
+            <div class="setting-item save-path">
+              <button id="browseBtn" class="styled-button secondary">Browse Save Path</button>
+              <span id="savePathLabel" class="path-label">Default Downloads</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="presets">
+          <h3>Quick Presets</h3>
+          <div class="preset-buttons">
+            <button id="ultraLightPreset" class="preset-btn">Ultra Light (Low-end PC)</button>
+            <button id="lightPreset" class="preset-btn">Light (Older PC)</button>
+            <button id="balancedPreset" class="preset-btn">Balanced (Default)</button>
+            <button id="qualityPreset" class="preset-btn">Quality (High)</button>
+            <button id="gameModePreset" class="preset-btn">Game Mode (Gaming/Streaming)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-container">
+        <div class="preview-header">
+          <h3>Preview</h3>
+          <div class="preview-controls">
+            <input type="checkbox" id="previewToggle" class="styled-checkbox" checked>
+            <label for="previewToggle">Show Preview</label>
+          </div>
+        </div>
+        <video id="previewVideo" autoplay muted playsinline></video>
+        <div class="recording-controls">
+          <button id="startBtn" class="control-btn start"><span class="icon">●</span> Record</button>
+          <button id="pauseBtn" class="control-btn pause" disabled><span class="icon">⏸</span> Pause</button>
+          <button id="stopBtn" class="control-btn stop" disabled><span class="icon">⏹</span> Stop</button>
+        </div>
+      </div>
+    </main>
+
+    <div id="status" class="status-bar"></div>
+
+    <div id="recordings" class="recordings-list">
+      <h3>Recent Recordings</h3>
+      <div id="recordingsList" class="recordings-container">
+        <!-- Recordings will be added here dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
