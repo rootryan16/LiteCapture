@@ -73,7 +73,7 @@ A highly optimized screen recording application designed specifically for low-en
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/litecapture.git
+   git clone https://github.com/rootryan16/LiteCapture.git
    cd litecapture
    ```
 
